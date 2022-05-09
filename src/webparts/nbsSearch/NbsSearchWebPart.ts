@@ -64,7 +64,7 @@ import { SearchHelper } from '../../helpers/SearchHelper';
 import IUserService from '../../services/UserService/IUserService';
 import { UserService } from '../../services/UserService/UserService';
 import PnPTelemetry from "@pnp/telemetry-js";
-import { UrlHelper } from '../../../lib/helpers/UrlHelper';
+import { UrlHelper } from '../../helpers/UrlHelper';
 
 export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWebPartProps> {
   private _userService: IUserService;
@@ -195,12 +195,12 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
     let queryDataSourceValue = this.properties.queryKeywords;
 
     let queryKeywords = queryDataSourceValue ? queryDataSourceValue : this.properties.defaultSearchQuery;
-    
+
     const searchK: string = UrlHelper.getQueryStringParam('k', null);
     if (searchK) {
         queryKeywords = decodeURIComponent(searchK);
     }
-    
+
     // Get data from connected sources
     if (this.properties.useRefiners) {
         if (this._isDirty) {
@@ -208,7 +208,7 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
             // Reset the default filters provided in URL when user starts to select/unselected values manually
             this.defaultSelectedFilters = [];
         }
-    }    
+    }
 
     const currentLocaleId = LocalizationHelper.getLocaleId(this.context.pageContext.cultureInfo.currentCultureName);
     const queryModifier = this._queryModifierInstance && this._queryModifierInstance.isInitialized ? this._queryModifierInstance.instance : null;
@@ -228,7 +228,7 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
         refiners: { $set: this.properties.refinersConfiguration },
         queryModifier: { $set: queryModifier },
     });
-    
+
     const isValueConnected = !!this.properties.queryKeywords;
     this._searchContainer = React.createElement(
         SearchResultsContainer,
@@ -282,7 +282,7 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
                     this.currentPageNumber = 1;
                     this.render();
                 }
-                
+
             },
             pagingSettings: this.properties.paging,
             instanceId: this.instanceId
@@ -291,7 +291,7 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
 
     if (isValueConnected && !this.properties.useDefaultSearchQuery ||
         isValueConnected && this.properties.useDefaultSearchQuery && this.properties.defaultSearchQuery ||
-        !isValueConnected && !isEmpty(queryKeywords) || 
+        !isValueConnected && !isEmpty(queryKeywords) ||
         this.properties.useSearchBox) {
         renderElement = this._searchContainer;
     } else {
@@ -320,7 +320,7 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
     if (telemetry.optOut) telemetry.optOut();
 
     this.initializeRequiredProperties();
-    
+
     this._taxonomyService = new TaxonomyService(this.context.pageContext.site.absoluteUrl);
 
     this._timeZoneBias = {
@@ -516,7 +516,7 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
 
     this.properties.sortableFields = Array.isArray(this.properties.sortableFields) ? this.properties.sortableFields : [];
 
-    // Ensure the minmal managed properties are here        
+    // Ensure the minmal managed properties are here
     const defaultManagedProperties =    [
                                             "Title",
                                             "Path",
@@ -558,7 +558,7 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
 
         defaultManagedProperties.map(property => {
 
-            const idx = findIndex(properties, (item:string) => property.toLowerCase() === item.toLowerCase());                
+            const idx = findIndex(properties, (item:string) => property.toLowerCase() === item.toLowerCase());
             if (idx === -1) {
                 properties.push(property);
             }
@@ -568,7 +568,7 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
     } else {
         this.properties.selectedProperties = defaultManagedProperties.join(',');
     }
-    
+
     this.properties.resultTypes = Array.isArray(this.properties.resultTypes) ? this.properties.resultTypes : [];
     this.properties.synonymList = Array.isArray(this.properties.synonymList) ? this.properties.synonymList : [];
     this.properties.searchQueryLanguage = this.properties.searchQueryLanguage ? this.properties.searchQueryLanguage : -1;
@@ -1070,7 +1070,7 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
                 }
             ]
         }),
-        
+
         PropertyPaneToggle('enableQueryRules', {
             label: strings.EnableQueryRulesLabel,
             checked: this.properties.enableQueryRules,
@@ -1304,11 +1304,11 @@ export default class NbsSearchWebPart extends BaseClientSideWebPart<INbsSearchWe
             })
         );
     }
-    
+
 
     return defaultRefinersFields;
   }
-  
+
   /**
    * Determines the group fields for the search query options inside the property pane
    */
@@ -1831,7 +1831,7 @@ private _getQueryModfiersFields(): IPropertyPaneField<any>[] {
       );
       return groupFields;
   }
-  
+
 
 private async initSuggestionProviders(): Promise<void> {
 
